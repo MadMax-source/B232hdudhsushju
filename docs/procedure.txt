@@ -1,0 +1,93 @@
+1. Objective
+To develop a Telegram bot that allows users to purchase Telegram accounts, track referrals, manage wallets, and process admin approvals with TRX (TRC20) integration and country-based restrictions.
+2. User Roles
+2.1 Regular User
+- Register and set password
+- Submit Telegram account files
+- Earn referral rewards
+- Connect TRX wallet
+- View balance and status
+2.2 Admin
+- Approve or reject user submissions
+- Set confirmation time
+- Set allowed countries
+- Manage user balances
+- Monitor wallet transactions
+- Use full admin panel via Telegram
+3. Functional Requirements
+3.1 User Authentication
+•	FR-1.1: User must set a password on first launch via /start.
+•	FR-1.2: Password must be verified on each login session.
+•	FR-1.3: Password can be changed with /changepassword.
+3.2 Wallet Management
+•	FR-2.1: User can connect a TRX (TRC20) wallet via /connectwallet.
+•	FR-2.2: Incoming TRX (TRC20) token transfers are auto-detected and recorded.
+3.3 Telegram Account Submission
+•	FR-3.1: User can upload Telegram account files (.zip, .txt, .json).
+•	FR-3.2: Uploaded files are sent to the admin for review.
+•	FR-3.3: Admin can approve/reject uploads.
+•	FR-3.4: On approval, user receives balance and success message.
+3.4 Referral System
+•	FR-4.1: Referral link is generated for each user.
+•	FR-4.2: When a referred user is confirmed, the referrer receives $0.01.
+•	FR-4.3: Referral relationships are stored and tracked.
+3.5 Account Confirmation System
+•	FR-5.1: Admin can set a global confirmation time (e.g., 10 minutes).
+•	FR-5.2: A cron job auto-rejects if admin does not confirm in time.
+•	FR-5.3: User is notified of result (accept/reject/timeout).
+3.6 Country Restrictions
+•	FR-6.1: Admin can specify allowed and restricted countries.
+•	FR-6.2: Users are validated by phone number prefix or IP geo.
+•	FR-6.3: Access is denied if country is restricted.
+3.7 Balance Management
+•	FR-7.1: User can view current balance.
+•	FR-7.2: Balance is updated after successful confirmation or referral.
+•	FR-7.3: Admin can manually update any user’s balance.
+3.8 Admin Panel (Telegram-Based)
+•	FR-8.1: Admin can view pending file uploads.
+•	FR-8.2: Admin can approve/reject uploads.
+•	FR-8.3: Admin can set confirmation time.
+•	FR-8.4: Admin can view and manage referrals.
+•	FR-8.5: Admin can add/remove allowed countries.
+3.9 Notifications
+•	FR-9.1: Users are notified of upload status.
+•	FR-9.2: Admin is notified when new files are submitted.
+•	FR-9.3: Referral confirmation notifications are sent.
+•	FR-9.4: TRX wallet incoming transfers trigger a notification.
+4. Data Requirements
+4.1 User Collection:
+{
+  "telegramId": "string",
+  "username": "string",
+  "passwordHash": "string",
+  "walletAddress": "string",
+  "referrerId": "string",
+  "balance": "number",
+  "country": "string",
+  "isApproved": "boolean"
+}
+4.2 Referral Collection:
+{
+  "referrerId": "string",
+  "referredId": "string",
+  "credited": "boolean"
+}
+4.3 Upload Collection:
+{
+  "userId": "string",
+  "fileLink": "string",
+  "status": "pending | approved | rejected",
+  "timestamp": "Date"
+}
+4.4 Country Settings:
+{
+  "allowedCountries": ["US", "IN", "UK"]
+}
+5. Scheduled Jobs
+- Auto-reject unconfirmed uploads after N minutes.
+- Optional: periodic balance check via TRON node/webhook.
+6. Non-Functional Requirements
+- Security: Passwords stored with hashing (e.g., bcrypt).
+- Scalability: Designed for 1,000+ users.
+- Availability: 99% uptime expected.
+- Compliance: Telegram Bot API and TronWeb integration compliant.
